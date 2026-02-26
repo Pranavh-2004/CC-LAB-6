@@ -1,6 +1,16 @@
 FROM jenkins/jenkins:lts
 
 USER root
-RUN apt-get update && apt-get install -y     docker.io     make     g++     curl
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        make \
+        g++ \
+        curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Docker CLI manually
+RUN curl -fsSL https://download.docker.com/linux/static/stable/aarch64/docker-26.1.4.tgz \
+    | tar xz -C /usr/local/bin --strip-components=1 docker/docker
 
 USER jenkins
